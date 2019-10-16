@@ -17,5 +17,8 @@ theta = np.array(([0,math.pi/2,-math.pi/2,1]))
 x = mr.FKinBody(m,blist.T,theta)
 y = mr.FKinSpace(m,blist.T,theta)
 
+print 'FKinBody:'
 print x
+print
+print 'FKinSpace:'
 print y
