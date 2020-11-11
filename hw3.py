@@ -38,8 +38,8 @@ a) Numerical body jacobian
 """
 jb = mr.JacobianBody(blist.T,theta_list)
 
-print 'a)'
-print 'Jacobian: '
+print("a)")
+print ("Jacobian: ")
 pprint.pprint(jb)
 print
 print
@@ -67,20 +67,20 @@ eval_v,evec_v = la.eig(a_v)
 len_w = np.sqrt(eval_w)
 len_v = np.sqrt(eval_v)
 
-print 'b)'
-print 'lengths of principle semi-axes for angular velocity manipulability ellipsoid: '
-print str(len_w)
-print
-print 'lengths of principle semi-axes for linear velocity manipulability ellipsoid: '
-print str(len_v)
-print
-print 'directions of principle semi-axes for linear velocity manipulability ellipsoid: '
-print str(evec_w)
-print
-print 'directions of principle semi-axes for linear velocity manipulability ellipsoid: '
-print str(evec_v)
-print
-print
+print("b)")
+print("lengths of principle semi-axes for angular velocity manipulability ellipsoid: ")
+print(str(len_w))
+print()
+print("lengths of principle semi-axes for linear velocity manipulability ellipsoid: ")
+print(str(len_v))
+print()
+print("directions of principle semi-axes for angular velocity manipulability ellipsoid: ")
+print(str(evec_w))
+print()
+print("directions of principle semi-axes for linear velocity manipulability ellipsoid: ")
+print(str(evec_v))
+print()
+print()
 
 
 """************************************
@@ -99,15 +99,15 @@ eval_v_inv,evec_v_inv = la.eig(a_v)
 len_w_inv = np.sqrt(eval_w_inv)
 len_v_inv = np.sqrt(eval_v_inv)
 
-print 'c)'
-print 'lengths of principle semi-axes of 3D moment ellipsoid: '
-print str(len_w_inv)
-print
-print 'lengths of principle semi-axes of 3D force ellipsoid: '
-print str(len_v_inv)
-print
-print 'directions of principle semi-axes of 3D moment ellipsoid: '
-print str(evec_w_inv)
-print
-print 'directions of principle semi-axes of 3D force ellipsoid: '
-print str(evec_v_inv)
+print("c)")
+print("lengths of principle semi-axes of 3D moment ellipsoid: ")
+print(str(len_w_inv))
+print()
+print("lengths of principle semi-axes of 3D force ellipsoid: ")
+print(str(len_v_inv))
+print()
+print("directions of principle semi-axes of 3D moment ellipsoid: ")
+print(str(evec_w_inv))
+print()
+print("directions of principle semi-axes of 3D force ellipsoid: ")
+print(str(evec_v_inv))
