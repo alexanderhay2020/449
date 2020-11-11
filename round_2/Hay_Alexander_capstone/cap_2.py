@@ -10,9 +10,11 @@ Capstone - Milestone 2
 # Imports
 import modern_robotics as mr
 import numpy as np
+import math
 
 # Global Variables
 ref_traj = []
+k = 1
 
 def shuffle(T, gripper_state):
     temp = [T[0][0],T[0][1],T[0][2],\
@@ -23,12 +25,22 @@ def shuffle(T, gripper_state):
     return temp
     # ref_traj = np.append(ref_traj,temp,)
 
-def TrajectoryGenerator(Tse_init, Tsc_init, Tsc_final, Tce_grasp, Tce_stand, k, t):
+def close_gripper():
+    # Gripper State: 1 = closed
+    # Gripper takes 0.625s to open/close
+    t = 0.63
+    N = t*k/0.01
+
+    temp = ref_traj[-1]
+    temp[-1] = 1
+    temp = np.full((63,13),temp)
+    for i in range(len(temp)):
+        ref_traj.append(temp[i])
+
+def TrajectoryGenerator(Tse_init, Tsc_init, Tsc_final, Tce_grasp, Tce_stand, k):
     """
     k:                  The number of trajectory reference configurations per 0.01 seconds
                         Ex: k=10, t=0.01; freq_controller = k/t = 1000Hz
-    
-    t:                  Time of trajectory in seconds.
     
     Tse_init:           The initial configuration of the end-effector in the reference trajectory
     Tsc_init:           The cube's initial configuration
@@ -37,16 +49,33 @@ def TrajectoryGenerator(Tse_init, Tsc_init, Tsc_final, Tce_grasp, Tce_stand, k, 
     Tce_stand:          The end-effector's standoff configuration above the cube, before and after grasping, relative to the cube
                         This specifies the configuration of the end-effector {e} relative to the cube frame {c} before lowering to the grasp configuration Tce,grasp, for example. 
     """
-    
+    t = 2
     N = t*k/0.01
     
-    Tse_si = np.dot(Tsc_init,Tce_stand)
+    # Move end-effector to cube
+    Tse_si = np.dot(Tsc_init, Tce_stand)
     traj = mr.CartesianTrajectory(Tse_init, Tse_si, t, N, 5)
-
     for i in range(len(traj)):
         temp = shuffle(traj[i], 0)
         ref_traj.append(temp)
-     
+    
+    # Drop end-effector to cube height
+    Tse_gi = np.dot(Tsc_init, Tce_grasp) 
+    traj = mr.CartesianTrajectory(Tse_si, Tse_gi, t, N, 5)
+    for i in range(len(traj)):
+        temp = shuffle(traj[i], 0)
+        ref_traj.append(temp)
+
+    # Close gripper
+    close_gripper()
+    # traj = ref_traj[-1]
+    # traj[-1] = 1
+    # traj = mr.CartesianTrajectory(traj, traj, 0.625, N, 5)
+    # for i in range(len(traj)):
+    #     temp = shuffle(traj[i], 0)
+    #     ref_traj.append(temp)
+    
+    
     print("Trajectory Generated")
 
     
@@ -66,7 +95,6 @@ def main():
                       [ 0,-1, 0, -0.2176, 0,     0],
                       [ 0, 0, 1,  0,      0,     0]]).T
     
-    """ Default positions """
     Tse_init = np.array([[ 0, 0, 1, 0],
                          [ 0, 1, 0 ,0],
                          [-1, 0, 0, 0.5],
@@ -86,10 +114,7 @@ def main():
     Tce_grasp = np.array([[-0.5, 0, 0.8660254, 0.015],[0, 1, 0, 0],[-0.8660254,0, -0.5,0.02],[0, 0, 0, 1]])
     Tce_stand = np.array([[0, 0, 1, -0.3],[0, 1, 0, 0],[-1, 0, 0, 0.5],[0, 0, 0, 1]])
     	
-    k = 1
-    t = 2
-    
-    TrajectoryGenerator(Tse_init, Tsc_init, Tsc_final, Tce_grasp, Tce_stand, k, t)
+    TrajectoryGenerator(Tse_init, Tsc_init, Tsc_final, Tce_grasp, Tce_stand, k)
     
     np.savetxt("ref_traj.csv", ref_traj, delimiter=",")
     print("Trajectory saved as ref_traj.csv")
