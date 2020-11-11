@@ -40,21 +40,15 @@ def TrajectoryGenerator(Tse_init, Tsc_init, Tsc_final, Tce_grasp, Tce_stand, k, 
     
     N = t*k/0.01
     
-    # End-effector standoff configuration above initial cube configuration in world frame
     Tse_si = np.dot(Tsc_init,Tce_stand)
     traj = mr.CartesianTrajectory(Tse_init, Tse_si, t, N, 5)
-    
-    # for i in range(int(N)):
-    #     param.append([traj[i][0][0],traj[i][0][1],traj[i][0][2],traj[i][1][0],traj[i][1][1],traj[i][1][2],\
- 			# traj[i][2][0],traj[i][2][1],traj[i][2][2],traj[i][0][3],traj[i][1][3],traj[i][2][3],0])
-           
-    # np.savetxt("traj.csv", traj, delimiter=",")
 
-    temp = shuffle(traj, 0)
-    ref_traj.append(temp)
+    for i in range(len(traj)):
+        temp = shuffle(traj[i], 0)
+        ref_traj.append(temp)
      
     print("Trajectory Generated")
-    # print(temp)
+
     
 def main():
     
@@ -95,14 +89,11 @@ def main():
     k = 1
     t = 2
     
-    # N = t*k/0.01
-    
-    # End-effector standoff configuration above initial cube configuration in world frame
-    # Tse_si = np.dot(Tsc_init,Tce_stand)
-    # traj = mr.CartesianTrajectory(Tse_init, Tse_si, t, N, 5)
-    
-    # np.savetxt("traj.csv", traj, delimiter=",")
     TrajectoryGenerator(Tse_init, Tsc_init, Tsc_final, Tce_grasp, Tce_stand, k, t)
+    
+    np.savetxt("ref_traj.csv", ref_traj, delimiter=",")
+    print("Trajectory saved as ref_traj.csv")
     
 if __name__ == '__main__':
 	main()
+    
