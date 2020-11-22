@@ -10,19 +10,18 @@ Capstone - Milestone 2
 # Imports
 import modern_robotics as mr
 import numpy as np
-import math
 
 # Global Variables
 ref_traj = []
 k = 1
 
 def shuffle(T, gripper_state):
-    temp = [T[0][0],T[0][1],T[0][2],\
-                      T[1][0],T[1][1],T[1][2],\
-                      T[2][0],T[2][1],T[2][2],\
-                      T[0][3],T[1][3],T[2][3], gripper_state]
+    vec = [T[0][0],T[0][1],T[0][2],\
+            T[1][0],T[1][1],T[1][2],\
+            T[2][0],T[2][1],T[2][2],\
+            T[0][3],T[1][3],T[2][3], gripper_state]
         
-    return temp
+    return vec
 
 def close_gripper():
     # Gripper State: 1 = closed
@@ -55,12 +54,11 @@ def TrajectoryGenerator(Tse_init, Tsc_init, Tsc_final, Tce_grasp, Tce_stand, k):
     k:                  The number of trajectory reference configurations per 0.01 seconds
                         Ex: k=10, t=0.01; freq_controller = k/t = 1000Hz
     
-    Tse_init:           The initial configuration of the end-effector in the reference trajectory
+    Tse_init:           The initial configuration of the end-effector for the reference trajectory
     Tsc_init:           The cube's initial configuration
     Tsc_final:          The cube's desired final configuration
     Tce_grasp:          The end-effector's configuration relative to the cube when it is grasping the cube
     Tce_stand:          The end-effector's standoff configuration above the cube, before and after grasping, relative to the cube
-                        This specifies the configuration of the end-effector {e} relative to the cube frame {c} before lowering to the grasp configuration Tce,grasp, for example. 
     """
     t = 2
     N = t*k/0.01
@@ -143,10 +141,10 @@ def main():
                           [ 0, 0, 1, 0.025],
                           [ 0, 0, 0, 1]])
     
-    Tce_grasp = np.array([[-0.5,       0, 0.8660254, 0.015],
-                          [ 0,         1, 0,         0],
-                          [-0.8660254, 0,-0.5,       0.02],
-                          [ 0,         0, 0,         1]])
+    Tce_grasp = np.array([[ 0, 0, 1, 0],
+                          [ 0, 1, 0, 0],
+                          [-1, 0, 0, 0],
+                          [ 0, 0, 0, 1]])
     
     Tce_stand = np.array([[ 0, 0, 1,-0.3],
                           [ 0, 1, 0, 0],

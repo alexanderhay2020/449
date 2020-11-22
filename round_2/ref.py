@@ -70,7 +70,8 @@ def TrajectoryGenerator(Tse_i,Tsc_i,Tsc_f,Tce_g,Tce_s,k):
 	temp[-1] = 1
 	for i in range(100):
 		param.append(temp)
-	traj3 = mr.CartesianTrajectory(Tse_gi,Tse_si,2,N,5) # Move from grasp position back to initial standoff position
+	
+    traj3 = mr.CartesianTrajectory(Tse_gi,Tse_si,2,N,5) # Move from grasp position back to initial standoff position
 	for i in range(int(N)):
 		param.append([traj3[i][0][0],traj3[i][0][1],traj3[i][0][2],traj3[i][1][0],traj3[i][1][1],traj3[i][1][2],\
 			traj3[i][2][0],traj3[i][2][1],traj3[i][2][2],traj3[i][0][3],traj3[i][1][3],traj3[i][2][3],1])
@@ -81,7 +82,8 @@ def TrajectoryGenerator(Tse_i,Tsc_i,Tsc_f,Tce_g,Tce_s,k):
 	for i in range(int(N)):
 		param.append([traj4[i][0][0],traj4[i][0][1],traj4[i][0][2],traj4[i][1][0],traj4[i][1][1],traj4[i][1][2],\
 			traj4[i][2][0],traj4[i][2][1],traj4[i][2][2],traj4[i][0][3],traj4[i][1][3],traj4[i][2][3],1])
-	Tce_g2 = np.array([[-0.5, 0, 0.8660254, 0.015],[0, 1, 0, 0],[-0.8660254,0, -0.5,0.],[0, 0, 0, 1]])
+	
+    Tce_g2 = np.array([[-0.5, 0, 0.8660254, 0.015],[0, 1, 0, 0],[-0.8660254,0, -0.5,0.],[0, 0, 0, 1]])
 	Tse_gf = np.dot(Tsc_f,Tce_g2) # The end-effector's configuration relative to the world when it is grasping the final cube
 	N = 2*k/0.01
 	traj5 = mr.CartesianTrajectory(Tse_sf,Tse_gf,2,N,5) # Move from final standoff position to final grasp position
@@ -90,7 +92,8 @@ def TrajectoryGenerator(Tse_i,Tsc_i,Tsc_f,Tce_g,Tce_s,k):
 			traj5[i][2][0],traj5[i][2][1],traj5[i][2][2],traj5[i][0][3],traj5[i][1][3],traj5[i][2][3],1])
 	temp = param[-1]
 	temp[-1] = 0
-	for i in range(100):
+	
+    for i in range(100):
 		param.append(temp)
 	traj6 = mr.CartesianTrajectory(Tse_gf,Tse_sf,2,N,5) # Move from final grasp position to final standoff position
 	for i in range(int(N)):
